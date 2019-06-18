@@ -3,64 +3,27 @@ package com.example.parking.bean;
 
 public class PhotoToOssBean {
 
-    private int code;
-    private String  message; // "SUCCESS"
-    private photoToOssData data;
+    private String imgurl;
+    private String carmun;
 
-
-    public int getCode() {
-        return code;
+    public String getImgurl() {
+        return imgurl;
     }
-    public void setCode(int code) {
-        this.code = code;
+    public void setImgurl(String imgurl) {
+        this.imgurl = imgurl;
     }
-    public String getMessage() {
-        return message;
+    public String getCarmun() {
+        return carmun;
     }
-    public void setMessage(String message) {
-        this.message = message;
-    }
-    public photoToOssData getData() {
-        return data;
-    }
-    public void setData(photoToOssData data) {
-        this.data = data;
+    public void setCarmun(String carmun) {
+        this.carmun = carmun;
     }
 
     @Override
     public String toString() {
-        return "photoToOssBean{" +
-                "code=" + code +
-                ", message='" + message + '\'' +
-                ", data=" + data +
+        return "PhotoToOssBean{" +
+                "imgurl='" + imgurl + '\'' +
+                ", carmun='" + carmun + '\'' +
                 '}';
     }
-
-    public static class photoToOssData{
-
-        private String carmun;
-        private String imgurl;
-
-        public String getCarmun() {
-            return carmun;
-        }
-        public void setCarmun(String carmun) {
-            this.carmun = carmun;
-        }
-        public String getImgurl() {
-            return imgurl;
-        }
-        public void setImgurl(String imgurl) {
-            this.imgurl = imgurl;
-        }
-
-        @Override
-        public String toString() {
-            return "photoToOssData{" +
-                    "carmun='" + carmun + '\'' +
-                    ", imgurl='" + imgurl + '\'' +
-                    '}';
-        }
-    }
-
 }

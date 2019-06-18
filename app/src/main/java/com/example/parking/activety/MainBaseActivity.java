@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -26,27 +27,12 @@ public class MainBaseActivity extends BaseActivity {
 
     protected static MainActivity activity;
 
-
     ParkingFragment parkingFragment =  null;
     OrderFragment orderFragment = null;
     MyFragment myFragment = null;
 
     public UserBean userBean;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        myFragment = new MyFragment();
-        orderFragment = new OrderFragment();
-        parkingFragment =  new ParkingFragment();
-        userBean = User_Shared.getALL(getApplicationContext());
-
-    }
 
 
     @Override
@@ -55,38 +41,11 @@ public class MainBaseActivity extends BaseActivity {
     }
 
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
-            switch (item.getItemId()) {
-                case R.id.navigation_1:
-                    setTitle ("车辆入场");
-                    fragmentTransaction.replace(R.id.activity_fragment, parkingFragment);
-                    fragmentTransaction.commit();
-                    return true;
-                case R.id.navigation_2:
-                    setTitle ("车辆列表");
-                    fragmentTransaction.replace(R.id.activity_fragment, orderFragment);
-                    fragmentTransaction.commit();
-                    return true;
-                case R.id.navigation_3:
-                    setTitle ("个人中心");
-                    fragmentTransaction.replace(R.id.activity_fragment,myFragment);
-                    fragmentTransaction.commit();
-                    return true;
-            }
-            return false;
-        }
-    };
 
    //TODO 提示
    protected void toast_makeText(final String text) {
 
-
+       Log.i(TAG,text);
     activity.runOnUiThread(new Runnable() {
         @Override
         public void run() {

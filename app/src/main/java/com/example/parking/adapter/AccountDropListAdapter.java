@@ -35,8 +35,7 @@ public class AccountDropListAdapter extends BaseAdapter {
 	private ArrayList<String> groups;
 	private boolean isCarType;
 
-	public AccountDropListAdapter(Context context,
-                                  ArrayList<String> groups, boolean isCarType) {
+	public AccountDropListAdapter(Context context, ArrayList<String> groups, boolean isCarType) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
 		this.groups = groups;

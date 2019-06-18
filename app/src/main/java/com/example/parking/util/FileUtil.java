@@ -2,7 +2,16 @@ package com.example.parking.util;
 
 
 
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.util.Log;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -189,6 +198,8 @@ public class FileUtil {
 		} catch (Exception e) {
 		}
 	}
+
+
 
 
 }

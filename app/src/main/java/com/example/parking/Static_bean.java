@@ -15,7 +15,7 @@ public class Static_bean {
      * TODO 车牌照片上传接口，返回车牌
      * @param file 文件
      */
-    public final static String photoToOss ="https://parking.yilufa.net:18443/park/upload/photoToOss";
+    public final static String photoToOss ="https://parking.yilufa.net:18443/park/parkplacesub/selectSubPlace";
 
 
 

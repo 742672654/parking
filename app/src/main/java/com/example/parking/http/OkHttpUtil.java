@@ -24,7 +24,6 @@ public class OkHttpUtil {
     private final static String TAG = "OkHttpUtil";
 
 
-
     public void doGet(final String url, final Map<String, String> param, final HttpCallBack2 httpCallBack2, final String sign) {
 
         try {
@@ -56,13 +55,19 @@ public class OkHttpUtil {
                 @Override
                 public void onFailure(Call call, IOException e) {
 
+
+
                     httpCallBack2.onResponseGET( usr0, param, sign, null);
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
 
-                    httpCallBack2.onResponseGET( usr0, param, sign, response.body().string());
+                    String ss = response.body().string();
+
+
+
+                    httpCallBack2.onResponseGET( usr0, param, sign, ss);
                 }
             });
 
@@ -99,7 +104,9 @@ public class OkHttpUtil {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-                httpCallBack2.onResponsePOST(url,param,sign,response.body().string());
+                String ss = response.body().string();
+
+                httpCallBack2.onResponsePOST(url,param,sign,ss);
             }
         });
 
@@ -142,7 +149,7 @@ public class OkHttpUtil {
                 public void onResponse(Call call, Response response) throws IOException {
 
                     String ss = response.body().string();
-                    Log.e(TAG+sign, "response ----->" + ss);
+
                     httpCallBack2.onResponseFile(null,null,null,ss);
                 }
             });

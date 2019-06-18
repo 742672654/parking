@@ -20,7 +20,6 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dip"
             android:background="@drawable/bt_shape"
-
             android:textSize="17sp"
             android:text="一键出场"
             android:textColor="@color/white" />
@@ -32,10 +31,11 @@
         android:layout_weight="1.48"
         android:background="@color/colorPrimary"
         android:gravity="center">
+
         <Button
             android:id="@+id/parking_photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="142dp"
+            android:layout_height="147dp"
             android:background="@drawable/photo" />
     </RelativeLayout>
 
@@ -68,7 +68,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
+                android:layout_weight="4"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:autoSizeTextType="uniform"
                 android:gravity="center"
@@ -102,11 +102,13 @@
                 android:textColor="@color/white" />
         </LinearLayout>
 
-        <LinearLayout
+        <ListView
+            android:id="@+id/orderlistview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3.3">
-        </LinearLayout>
+            android:layout_weight="3.3"
+            android:layout_marginLeft="8sp"
+            android:layout_marginRight="8sp"/>
 
     </LinearLayout>
 

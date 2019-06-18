@@ -9,7 +9,6 @@ import java.util.Map;
  */
 public interface HttpCallBack2 {
 
-
 	/**
 	 * 描述：通信成功的回调
 	 * @param url 请求地址
@@ -39,4 +38,5 @@ public interface HttpCallBack2 {
 	 * @return
 	 */
     void onResponseFile(String url, Map<String, String> param, String sign, String object);
+
 }
