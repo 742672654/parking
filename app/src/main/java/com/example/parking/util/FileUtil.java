@@ -2,204 +2,132 @@ package com.example.parking.util;
 
 
 
-import android.annotation.SuppressLint;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.util.Log;
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileChannel.MapMode;
-
+import java.io.InputStream;
 
 
 
 public class FileUtil {
 
-	/**
-	 * the traditional io way
-	 * 
-	 * @param filename
-	 * @return
-	 * @throws IOException
-	 */
-	public static byte[] toByteArray(String filename) throws IOException {
+	private static final String TAG = "FileUtil<文件工具类>";
 
-		File f = new File(filename);
-		if (!f.exists()) {
-			throw new FileNotFoundException(filename);
-		}
 
-		ByteArrayOutputStream bos = new ByteArrayOutputStream((int) f.length());
-		BufferedInputStream in = null;
+	//TODO 获取Uri的绝对路径
+	public static String getFile_Path(Uri uri){
+
+		if (uri == null) { return null; }
+		String path = null;
 		try {
-			in = new BufferedInputStream(new FileInputStream(f));
-			int buf_size = 1024;
-			byte[] buffer = new byte[buf_size];
-			int len = 0;
-			while (-1 != (len = in.read(buffer, 0, buf_size))) {
-				bos.write(buffer, 0, len);
-			}
-			return bos.toByteArray();
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				in.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			bos.close();
+			path = uri.getPath();
+			if (StringUtil.is_valid(path)) { return path; }
+			path = uri.getEncodedPath();
+			if (StringUtil.is_valid(path)) { return path; }
+		} catch (Exception e) {
+			Log.w(TAG, e);
 		}
+		return path;
 	}
 
-	/**
-	 * NIO way
-	 * 
-	 * @param filename
-	 * @return
-	 * @throws IOException
-	 */
-	public static byte[] toByteArray2(String filename) throws IOException {
+	//TODO 返回文件后缀<无后缀返回原文件名>
+	public static String getFile_Suffix(Object path){
 
-		File f = new File(filename);
-		if (!f.exists()) {
-			throw new FileNotFoundException(filename);
-		}
+		try{
+			String filePath = path instanceof Uri?getFile_Path((Uri)path):path instanceof String?filePath = (String) path:null;
 
-		FileChannel channel = null;
-		FileInputStream fs = null;
-		try {
-			fs = new FileInputStream(f);
-			channel = fs.getChannel();
-			ByteBuffer byteBuffer = ByteBuffer.allocate((int) channel.size());
-			while ((channel.read(byteBuffer)) > 0) {
-				// do nothing
-				// System.out.println("reading");
-			}
-			return byteBuffer.array();
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				channel.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
-				fs.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			String [] photoPath = filePath.split(filePath.contains("/")?"/":".");
+			if (photoPath==null || photoPath.length==0){ return filePath; }
+
+			return photoPath[photoPath.length-1];
+		}catch (Exception e){
+			Log.w(TAG,e);
 		}
+		return null;
 	}
 
-	/**
-	 * Mapped File way MappedByteBuffer 可以在处理大文件时，提升性能
-	 * 
-	 * @param filename
-	 * @return
-	 * @throws IOException
-	 */
-	@SuppressWarnings("resource")
-	public static byte[] toByteArray3(String filename) throws IOException {
+	//TODO 文件转byte[]
+	//TODO uri instanceof Uri或String绝对路径
+	public static byte[] getFile_Byte(Object uri){
 
-		FileChannel fc = null;
+		InputStream in = null;
 		try {
-			fc = new RandomAccessFile(filename, "r").getChannel();
-			MappedByteBuffer byteBuffer = fc.map(MapMode.READ_ONLY, 0, fc.size()).load();
-			System.out.println(byteBuffer.isLoaded());
-			byte[] result = new byte[(int) fc.size()];
-			if (byteBuffer.remaining() > 0) {
-				// System.out.println("remain");
-				byteBuffer.get(result, 0, byteBuffer.remaining());
-			}
-			return result;
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				fc.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+
+			in = new FileInputStream( uri instanceof String ? (String)uri: uri instanceof Uri? getFile_Path((Uri)uri):null );
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+			byte[] buffer = new byte[1024 * 4];
+			int n = 0;
+			while ((n = in.read(buffer)) != -1) { out.write(buffer, 0, n); }
+
+			return out.toByteArray();
+		} catch (Exception e) {
+			Log.w(TAG,e);
+		}finally {
+			try { if (in!=null)in.close(); } catch (IOException e) { Log.w(TAG,e); }
 		}
+		return null;
 	}
 
-	/**
-	 * 获取SDCard的目录路径功能
-	 * 
-	 * @return
-	 */
+	//TODO 获取SDCard的目录真实路径
 	public static String getSDCardPath() {
+
 		String result = null;
 		try {
 			// 判断SDCard是否存在
 			boolean sdcardExist = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+
 			Log.e("存在sdcard路径：", "" + sdcardExist);
 			if (sdcardExist) {
 				File sdcardDir = Environment.getExternalStorageDirectory();
 				result = sdcardDir.toString();
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.w(TAG,e);
 		}
 		return result;
 	}
 
-	/**
-	 * 在SD卡上创建文件
-	 *
-	 * @throws IOException
-	 */
-	public static File createSDFile() throws IOException {
-		File file = new File(getSDCardPath() + "/tcb");
-		if (!file.exists()) {
-			file.mkdirs();
-		}
-		File f = new File(file.getAbsoluteFile() + "/data.txt");
-		if (f.exists()) {
-			f.createNewFile();
+	//TODO 在SD卡上创建文件
+	public static File createSDFile(){
+
+		File f = null;
+		try {
+			File file = new File(getSDCardPath() + "/parking");
+			if (!file.exists()) { file.mkdirs(); }
+
+			f = new File(file.getAbsoluteFile() + "/data.txt");
+			if (f.exists()) { f.createNewFile(); }
+
+			return f;
+		} catch (Exception e) {
+			Log.w(TAG, e);
 		}
 		return f;
 	}
 
-
-
-	/**
-	 * 写入内容到SD卡中的txt文本中 str为内容
-	 */
+	//TODO 写入内容到SD卡中的txt文本中 str为内容
 	public static void writeSDFile(String describe, String str) {
+
+		FileWriter fw = null;
 		try {
-			// createSDFile();
-			FileWriter fw = new FileWriter(createSDFile().getAbsolutePath(), true);
+
+			fw = new FileWriter(createSDFile().getAbsolutePath(), true);
 			fw.write(TimeUtil.getDateTime() + "  " + describe + "--->>>" + str + "\n");
-			fw.flush();
-			fw.close();
 		} catch (Exception e) {
+
+			Log.w(TAG,e);
+		}finally {
+
+			try { if (fw != null) fw.flush(); } catch (IOException e) { Log.w(TAG, e); }
+			try { if (fw != null) fw.close(); } catch (IOException e) { Log.w(TAG, e); }
 		}
 	}
-
-
 
 
 }

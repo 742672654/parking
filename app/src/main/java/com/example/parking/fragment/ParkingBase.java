@@ -2,6 +2,7 @@ package com.example.parking.fragment;
 
 
 import android.content.Intent;
+import android.device.PrinterManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,9 +16,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.parking.R;
+import com.example.parking.activety.MainActivity;
 import com.example.parking.bean.ParkingSpaceBean;
 import com.example.parking.http.HttpCallBack2;
 import com.example.parking.listView.ParkingSpaceView;
+import com.example.parking.listView.PrrkingindexView;
+import com.example.parking.printer.PrintBillService;
 import com.example.parking.util.FileUtil;
 import com.example.parking.util.StringUtil;
 
@@ -30,17 +34,17 @@ import java.util.Map;
  * 日期:	2019年5月29日
  * 开发者:	KXD
  */
-public class ParkingBase extends BaseFragment implements OnClickListener, HttpCallBack2 {
+public class ParkingBase extends BaseFragment {
 
 
-    private static final String TAG = "ParkingBase";
+    public static final String TAG = "ParkingBase";
 
 
     protected TextView parking_carmun;//车牌号
     protected TextView parking_pre_price;//预交费用
     protected Button parking_photo;
     protected Button button_order_add;
-    protected Button button_choice_parkingspace;
+    protected TextView button_choice_parkingspace;
 
     protected ParkingSpaceView parkingSpaceView = null;
 
@@ -53,9 +57,12 @@ public class ParkingBase extends BaseFragment implements OnClickListener, HttpCa
     }
 
     @Override
-    public void onClick(View v){
-
+    public void onStart() {
+        super.onStart();
+        super.onPosition(TAG);
+        button_choice_parkingspace.setText( PrrkingindexView.id );
     }
+
 
     public void setListview_item_title(final ParkingSpaceBean parkingSpaceBean){
 
@@ -86,20 +93,5 @@ public class ParkingBase extends BaseFragment implements OnClickListener, HttpCa
 
     }
 
-
-    @Override
-    public void onResponseGET(String url, Map<String, String> param, String sign, String object) {
-
-    }
-
-    @Override
-    public void onResponsePOST(String url, Map<String, String> param, String sign, String object) {
-
-    }
-
-    @Override
-    public void onResponseFile(String url, Map<String, String> param, String sign, String object) {
-
-    }
 
 }

@@ -56,18 +56,13 @@ public class OkHttpUtil {
                 public void onFailure(Call call, IOException e) {
 
 
-
                     httpCallBack2.onResponseGET( usr0, param, sign, null);
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
 
-                    String ss = response.body().string();
-
-
-
-                    httpCallBack2.onResponseGET( usr0, param, sign, ss);
+                    httpCallBack2.onResponseGET( usr0, param, sign, response.body().string());
                 }
             });
 
@@ -104,9 +99,7 @@ public class OkHttpUtil {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-                String ss = response.body().string();
-
-                httpCallBack2.onResponsePOST(url,param,sign,ss);
+                httpCallBack2.onResponsePOST(url,param,sign,response.body().string());
             }
         });
 
@@ -132,7 +125,6 @@ public class OkHttpUtil {
                 builder.addFormDataPart(key, object.toString());
             }
 
-
             builder.addFormDataPart(name, filename, RequestBody.create(null, pImgFull));
 
             //创建Request
@@ -148,9 +140,7 @@ public class OkHttpUtil {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
 
-                    String ss = response.body().string();
-
-                    httpCallBack2.onResponseFile(null,null,null,ss);
+                    httpCallBack2.onResponseFile(url,param,sign,response.body().string());
                 }
             });
         } catch (Exception e) {

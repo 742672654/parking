@@ -15,7 +15,7 @@ public class OrderFragment extends OrderBase {
 
 
 
-    private static final String TAG = "ExitFragment2";
+    public static final String TAG = "ExitFragment2";
 
 
     @Override

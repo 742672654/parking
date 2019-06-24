@@ -35,6 +35,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
     @Override
+    public void onBackPressed() {
+        // 返回键监听
+        // super.onBackPressed();//注释掉这行,back键不退出activity
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -51,8 +57,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void initView() {
-
-        setTitle ("尚宝智慧泊车系统");
 
         findViewById(R.id.button_login).setOnClickListener(this);
         findViewById(R.id.imageView_cuowu).setOnClickListener(this);

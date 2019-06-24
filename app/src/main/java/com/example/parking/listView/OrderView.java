@@ -26,14 +26,13 @@ public class OrderView extends BaseAdapter {
     Context context;
     OrderBase orderBase;
 
+
     public OrderView(Context context, OrderBase orderBase, List<Map<String, Object>> list) {
         this.layoutInflater = layoutInflater.from(context);
         this.context=context;
         this.list = list;
         this.orderBase=orderBase;
     }
-
-
 
     //itme的数量
     @Override
@@ -57,7 +56,7 @@ public class OrderView extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
 
         //第三个参数false：不会为item添加父布局
-        View view1 = layoutInflater.inflate(R.layout.listview_item,viewGroup,false);
+        View view1 = layoutInflater.inflate(R.layout.listview_order_item,viewGroup,false);
 
         TextView item_title1 = view1.findViewById(R.id.item_title1);
         TextView item_title2 = view1.findViewById(R.id.item_title2);

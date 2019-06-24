@@ -9,18 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.parking.R;
 import com.example.parking.activety.MainActivity;
-import com.example.parking.bean.ParkingSpaceBean;
-import com.example.parking.listView.ParkingSpaceView;
+import com.example.parking.bean.PhotoToOssBean;
 import com.example.parking.printer.PrintBillService;
 import com.example.parking.printer.PrinterManagerActivity;
+import com.google.gson.Gson;
+import java.net.URLDecoder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -32,18 +28,14 @@ public class ParkingFragment extends ParkingBase {
 
 
 
-    private static final String TAG = "ParkingFragment";
-
-    private String pathname = null; //本地地址
-    private String inimage = null;  //远程地址
-
+    public static final String TAG = "ParkingFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView( inflater, container, savedInstanceState );
-        parkingSpaceView = new ParkingSpaceView( this, rootView );
         return rootView;
     }
+
 
 
     @Override
@@ -61,30 +53,10 @@ public class ParkingFragment extends ParkingBase {
                 Handler handler2 = MainActivity.getHandler();
                 handler2.sendMessage(message2);
                 break;
+
             case R.id.button_order_add:
 
-                Map<String,String> map = new HashMap<String,String>();
-                    map.put("token",activity.userBean.getToken());
-                    map.put("carnum",parking_carmun.getText().toString());
-                    map.put("preprice",parking_pre_price.getText().toString());
-                    map.put("ordertype","1");
-                    map.put("inimage",inimage);
-                    map.put("subid","");
-                    map.put("subname","");
-                break;
-            case R.id.btn_choice_parkingspace:
-
-                List<ParkingSpaceBean> list = new ArrayList<ParkingSpaceBean>();
-
-                ParkingSpaceBean ss = new ParkingSpaceBean();
-                ss.setId("asdasd");
-                ss.setSubname("sadasdasd                               ");
-
-                list.add(ss);
-
-                parkingSpaceView.showPopupWindow( list );
-
-
+                printer_marking(1,"http://www.baidu.com");
                 break;
 
             default:
@@ -92,48 +64,26 @@ public class ParkingFragment extends ParkingBase {
         }
     }
 
-//TODO 修改车牌号,并且显示<保存订单>按钮
-    public void parking_carmun(final String carmun,String pathname0,String inimage0){
-        pathname = pathname0;
-        inimage = inimage0;
+    //TODO 修改车牌号
+    public void parking_carmun(String obj) {
 
+        try {
 
-        if (getActivity()==null){
+            final PhotoToOssBean photoToOssBean = new Gson().fromJson(URLDecoder.decode(obj, "UTF-8"), PhotoToOssBean.class);
 
-            Log.i(TAG,"activity===null");
-        }
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+                    parking_carmun.setText(photoToOssBean.getCarmun());
 
-                parking_carmun.setText(carmun);
-                button_order_add.setVisibility( View.VISIBLE ); //INVISIBLE
-
-                try{
-
-                    Intent intentService = new Intent(getActivity(), PrintBillService.class);
+                    Intent intentService = new Intent(activity, PrintBillService.class);
                     intentService.putExtra("SPRT", PrinterManagerActivity.CfgStr);
-                    getActivity().startService(intentService);
-                }catch (Exception e){
-                    e.printStackTrace();
+                    activity.startService(intentService);
                 }
-
-            }
-        });
-    }
-
-
-
-    @Override
-    public void onResponseGET(String url, Map<String, String> param, String sign, String object) {
-
-        Log.i(TAG, url + "----" + object+"'****"+param);
-
-        switch (sign) {
-            default:
-                break;
+            });
+        } catch (Exception e) {
+            Log.w(TAG, e);
         }
     }
-
 }

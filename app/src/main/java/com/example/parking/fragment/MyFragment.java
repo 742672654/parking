@@ -16,8 +16,13 @@ public class MyFragment extends MyBase {
 
 
 
-    private static final String TAG = "MyFragment";
+    public static final String TAG = "MyFragment";
 
+
+    public void onStart() {
+        super.onStart();
+        super.onPosition(TAG);
+    }
 
     @Override
     public void onClick(View v) {

@@ -4,6 +4,9 @@
 
     <solid android:color="@color/colorPrimary"/>
 
+    <stroke
+        android:width="2dp"
+        android:color="@color/nfc_dialog" />
 
 
     <corners

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.parking.R;
+import com.example.parking.activety.MainActivity;
 import com.example.parking.http.HttpCallBack2;
 import com.example.parking.listView.OrderView;
 
@@ -27,7 +28,7 @@ import java.util.Map;
 public class OrderBase extends BaseFragment implements OnClickListener, HttpCallBack2 {
 
 
-    private static final String TAG = "OrderBase";
+    public static final String TAG = "OrderBase";
 
     private ListView listView;
 
@@ -35,7 +36,17 @@ public class OrderBase extends BaseFragment implements OnClickListener, HttpCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.order_fragment, container, false);
+
+
+        listView = rootView.findViewById(R.id.orderlistview);
+
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        super.onPosition(TAG);
     }
 
     @Override
@@ -46,16 +57,7 @@ public class OrderBase extends BaseFragment implements OnClickListener, HttpCall
         super.onActivityCreated(savedInstanceState);
 
 
-        listView = getActivity().findViewById(R.id.orderlistview);
 
-// TODO  系统配置器
-//        //第一步：准备数据源
-//        String[] dataString = {"张三","李四","王五","张三","李四","王五","张三","李四","王五","张三","李四","王五","张三","李四","王五",
-//                "张三","李四","王五","张三","李四","王五","张三","李四","王五"};
-//        //第二步：创建适配器
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,dataString);
-//        //第三步：绑定适配器
-//        listView.setAdapter(arrayAdapter);
 
 // TODO  自定义配置器
         //第一步：准备数据源
@@ -73,12 +75,10 @@ public class OrderBase extends BaseFragment implements OnClickListener, HttpCall
         list.add(map2);
 
         //第二步：创建适配器,存入数据
-        OrderView myAdapter = new OrderView(getActivity(),this,list);
+        OrderView myAdapter = new OrderView(activity,this,list);
 
         //第三步：绑定适配器
         listView.setAdapter(myAdapter);
-
-
     }
 
 

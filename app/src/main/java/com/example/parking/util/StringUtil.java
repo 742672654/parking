@@ -51,6 +51,18 @@ public class StringUtil {
     }
 
     /**
+     * @功能 判断字符串是否有效
+     */
+    public static boolean is_valid(String s0){
+
+        if ( s0==null || "".equals(s0) || s0.length()==0 ||  replaceUseless(s0).length()==0 ){
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
      * @return 0:都为空或""，1：都不为空或!""，2：s1为不空或!""，3：s2为不空或!""
      * @功能 判断两个字符串不为空的四种情况
      * @author xiaoduo
@@ -128,5 +140,9 @@ public class StringUtil {
 
         return buf.toString();
     }
+
+
+
+
 
 }
