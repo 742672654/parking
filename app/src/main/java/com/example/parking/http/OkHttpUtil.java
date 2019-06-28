@@ -130,7 +130,11 @@ public class OkHttpUtil {
             //创建Request
             final Request request = new Request.Builder().url(url).post(builder.build()).build();
             //单独设置参数 比如读取超时时间
-            final Call call = new OkHttpClient().newBuilder().writeTimeout(50, TimeUnit.SECONDS).build().newCall(request);
+            final Call call = new OkHttpClient().newBuilder().writeTimeout(50, TimeUnit.SECONDS)
+
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(20, TimeUnit.SECONDS)
+                    .build().newCall(request);
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {

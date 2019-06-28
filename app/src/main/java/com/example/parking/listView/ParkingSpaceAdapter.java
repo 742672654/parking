@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.example.parking.R;
-import com.example.parking.bean.ParkingSpaceBean;
+import com.example.parking.bean.http.ParkingSpaceData;
 import java.util.List;
 
 
@@ -18,12 +18,12 @@ public class ParkingSpaceAdapter extends BaseAdapter {
     private static final String TAG = "ParkingSpaceView";
 
 
-    private List<ParkingSpaceBean> list;  //数据源与配置器建立连接
+    private List<ParkingSpaceData> list;  //数据源与配置器建立连接
     private LayoutInflater layoutInflater;//初始化布局填充器
     private Context context;
 
 
-    public ParkingSpaceAdapter(Context context, List<ParkingSpaceBean> list) {
+    public ParkingSpaceAdapter(Context context, List<ParkingSpaceData> list) {
         this.layoutInflater = layoutInflater.from(context);
         this.context=context;
         this.list = list;
@@ -56,7 +56,7 @@ public class ParkingSpaceAdapter extends BaseAdapter {
         //第三个参数false：不会为item添加父布局
         View view1 = layoutInflater.inflate(R.layout.parking_space_item,viewGroup,false);
 
-        ParkingSpaceBean parkingSpaceBean = list.get(i);
+        ParkingSpaceData parkingSpaceBean = list.get(i);
         ((TextView)view1.findViewById(R.id.listview_item_title1)).setText(parkingSpaceBean.getSubname());
 
         return view1;

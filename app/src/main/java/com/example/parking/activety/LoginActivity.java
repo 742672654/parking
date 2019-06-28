@@ -13,8 +13,10 @@ import com.example.parking.Shared.User_Shared;
 import com.example.parking.Static_bean;
 import com.example.parking.bean.ResponseBean;
 import com.example.parking.bean.UserBean;
+import com.example.parking.bean.http.HttpUserBean;
 import com.example.parking.http.HttpManager2;
 import com.example.parking.util.FileUtil;
+import com.example.parking.util.JsonUtil2;
 import com.example.parking.util.StringUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,7 +29,7 @@ import java.util.Map;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "LoginActivity<登录界面>";
 
     private EditText editText_account;
     private EditText editText_pass;
@@ -43,12 +45,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.activity = this;
         setContentView(R.layout.activity_login);
 
         initView();
 
         //创建文件夹
-        String strPath = FileUtil.getSDCardPath() + "/parking/" + StringUtil.getUuid();
+        String strPath = FileUtil.getSDCardPath() + "/parking/" ;
         File file = new File(strPath);
         if(!file.exists()){
             file.mkdirs();
@@ -66,6 +69,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         editText_pass = findViewById(R.id.editText_pass);
         editText_edition = findViewById(R.id.editText_edition);
 
+        UserBean userBean = User_Shared.getALL(this);
+        if (userBean!=null){
+            editText_account.setText(userBean.getPhone());
+            editText_pass.setText(userBean.getPassword());
+        }
     }
 
 
@@ -106,10 +114,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             param.put("phone",phone);
             param.put("password",password);
             param.put("edition",edition);
-        HttpManager2.requestGet(Static_bean.login,  param, this, "login");
+        HttpManager2.requestPost(Static_bean.login,  param, this, "login");
     }
 
-
+    //TODO >>>>接收登录
     private void button_login2( final Map<String, String> param, final String object ){
 
 
@@ -119,16 +127,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 try{
 
-                    ResponseBean responseBean = new GsonBuilder().disableHtmlEscaping().create().fromJson( object,ResponseBean.class );
-                    if (responseBean.getCode()!=200){
-                        Toast.makeText(LoginActivity.this,"登录失败."+responseBean.getMessage(), Toast.LENGTH_SHORT).show();
+                    HttpUserBean httpUserBean = JsonUtil2.fromJson(object,HttpUserBean.class);
+                    Log.i(TAG,httpUserBean.toString());
+
+                    if (httpUserBean.getCode()!=200){
+                        toast_makeText(httpUserBean.getMessage());
                         return;
                     }
 
-                    Map<String, UserBean> map = new Gson().fromJson( responseBean.getData(),new TypeToken<Map<String,UserBean>>(){}.getType() );
+                    HttpUserBean.UserInfo userInfo = JsonUtil2.fromJson(httpUserBean.getData().substring(12,httpUserBean.getData().length()-1),HttpUserBean.UserInfo.class);
+
+                    UserBean userBean = new UserBean(userInfo);
+                    userBean.setPhone(param.get("phone"));
+                    userBean.setPassword(param.get("password"));;
 
                     //保存用户信息到缓存
-                    User_Shared.saveALL(getApplicationContext(),map.get("userInfo"));
+                    User_Shared.saveALL(getApplicationContext(),userBean);
 
                     Log.i(TAG, "跳转到第二页：Activity=" + TAG + ";joinType=" + param.get("joinType"));
                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
@@ -164,13 +178,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
 
+
+
     @Override
-    public void onResponseGET(String url, Map<String, String> param, String sign, String object) {
-        super.onResponseGET(url, param, sign, object);
+    public void onResponsePOST(String url, Map<String, String> param, String sign, String object) {
+        super.onResponsePOST(url, param, sign, object);
         Log.i(TAG,"url="+url+";param="+param+";sign="+sign+";object="+object);
 
         button_login2(  param, object );
     }
-
 
 }

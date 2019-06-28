@@ -15,6 +15,7 @@
         android:background="@color/colorPrimary">
 
         <Button
+            android:id="@+id/allCharge"
             android:layout_width="80dp"
             android:layout_height="27dp"
             android:layout_alignParentRight="true"
@@ -26,7 +27,7 @@
             android:textSize="17sp" />
 
         <Button
-            android:id="@+id/parking_photo"
+            android:id="@+id/order_photo"
             android:layout_width="142dp"
             android:layout_height="147dp"
             android:layout_centerInParent="true"
@@ -69,7 +70,7 @@
                 android:text="车  牌  号:"/>
 
             <EditText
-                android:id="@+id/parking_carmun"
+                android:id="@+id/order_carmun"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
@@ -83,14 +84,13 @@
                 android:textCursorDrawable="@null" />
 
             <Button
-                android:id="@+id/btn_free2"
+                android:id="@+id/btn_free"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:layout_marginRight="9sp"
                 android:layout_marginBottom="5sp"
                 android:layout_marginTop="5sp"
-
                 android:background="@drawable/bt_shape"
                 android:text="刷新"
                 android:textSize="17sp"
@@ -102,6 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3.3"
+            android:layout_marginTop="2dp"
             android:layout_marginLeft="8sp"
             android:layout_marginRight="8sp"/>
 

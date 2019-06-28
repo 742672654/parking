@@ -42,7 +42,7 @@ public class BaseActivity extends AppCompatActivity implements HttpCallBack2 {
 
     private static final String TAG = "BaseActivity";
 
-    protected static MainActivity activity;
+    protected static Activity activity;
 
 
     //TODO 提示

@@ -6,12 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.example.parking.R;
+import com.example.parking.bean.http.SelectSubPlaceBean;
 import com.example.parking.fragment.ParkingIndexFragment;
+import com.example.parking.util.TimeUtil;
 
 import java.util.List;
 
@@ -19,13 +19,13 @@ import java.util.List;
 public class PrrkingindexView extends BaseAdapter {
 
 
-    public static String id = "";
+    private static String id = "";
 
-    private List<String> list;  //数据源与配置器建立连接
+    private List<SelectSubPlaceBean.SelectSubPlaceData>  list;  //数据源与配置器建立连接
     private Context context;
     private ParkingIndexFragment fragment;
 
-    public PrrkingindexView(Context context, ParkingIndexFragment fragment, List<String> list) {
+    public PrrkingindexView(Context context, ParkingIndexFragment fragment, List<SelectSubPlaceBean.SelectSubPlaceData>  list) {
         this.fragment = fragment;
         this.context = context;
         this.list = list;
@@ -33,7 +33,7 @@ public class PrrkingindexView extends BaseAdapter {
 
     //itme的数量
     @Override
-    public int getCount() { return list.size(); }
+    public int getCount() { return list==null?0:(list.size()/2+list.size()%2); }
 
     //返回第几条itme信息
     @Override
@@ -43,6 +43,18 @@ public class PrrkingindexView extends BaseAdapter {
     @Override
     public long getItemId(int position) { return position; }
 
+
+    public SelectSubPlaceBean.SelectSubPlaceData  getSelectData(){
+
+        for (int i=0;i<list.size();i++){
+
+            if (id.equals(list.get(i).getId())){
+                return list.get(i);
+            }
+        }
+        return null;
+    }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
@@ -50,133 +62,119 @@ public class PrrkingindexView extends BaseAdapter {
         //第三个参数false：不会为item添加父布局
         View view1 = LayoutInflater.from(context).inflate(R.layout.listview_prrkingindex_item, viewGroup,false);
 
-        setleft(  view1 );
-        setright( view1 );
+        setleft(  view1,i );
+
+        setright(  view1,i );
 
         return view1;
     }
 
-    int s = 1;
-    private void setleft( View view1 ){
 
-        final RelativeLayout relativeLayout = view1.findViewById(R.id.listview_prrkingindex_item_RelativeLayout_Left);
+    private void setleft(View view1, int i ){
 
-        final  TextView id_number_left = view1.findViewById(R.id.id_number_left);
+
+        RelativeLayout relativeLayout = view1.findViewById(R.id.listview_prrkingindex_item_RelativeLayout_Left);
+        relativeLayout.setVisibility( View.VISIBLE );
+
+
+        TextView id_number_left = view1.findViewById(R.id.id_number_left);
         TextView car_number_left = view1.findViewById(R.id.car_number_left);
         TextView start_time_left = view1.findViewById(R.id.start_time_left);
         TextView earnest_money_left = view1.findViewById(R.id.earnest_money_left);
-        TextView arrears_money_left = view1.findViewById(R.id.arrears_money_left);
 
 
+        final SelectSubPlaceBean.SelectSubPlaceData selectSubPlaceDate = list.get(i*2);
 
-        relativeLayout.setBackgroundResource(R.drawable.listview_index_yes);
+        if ( selectSubPlaceDate.getHavecar() == 2 ){
+
+            relativeLayout.setBackgroundResource(R.drawable.listview_index_yes);
+
+            id_number_left.setText(selectSubPlaceDate.getCode());
+            start_time_left.setText("开始时间:"+TimeUtil.stampToDate(selectSubPlaceDate.getParktime()).substring(5,16));
+            earnest_money_left.setText("预付金额:"+selectSubPlaceDate.getPreprice()+"元");
+            car_number_left.setText(selectSubPlaceDate.getCarnum());
+
+        }else{
+
+            relativeLayout.setBackgroundResource(R.drawable.listview_index_no);
+            id_number_left.setText(selectSubPlaceDate.getCode());
+
+            view1.findViewById(R.id.car_fang_left).setVisibility( View.INVISIBLE );
+            car_number_left.setVisibility( View.INVISIBLE );
+            start_time_left.setVisibility( View.INVISIBLE );
+            earnest_money_left.setVisibility( View.INVISIBLE );
+        }
+
         relativeLayout.setPadding(relativeLayout.getPaddingLeft(),
-                    relativeLayout.getPaddingTop(),
-                    relativeLayout.getPaddingRight(),
-                    relativeLayout.getPaddingBottom());
+                relativeLayout.getPaddingTop(),
+                relativeLayout.getPaddingRight(),
+                relativeLayout.getPaddingBottom());
 
-        id_number_left.setText(String.valueOf(s++));
-        relativeLayout.setTag("");
+        relativeLayout.setTag(selectSubPlaceDate.getId());//设置标签
         relativeLayout.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 id = v.getTag().toString();
-                fragment.openParking();
+                fragment.openParking(selectSubPlaceDate);
             }
         });
-
-
-//        if (1==1){
-//
-//            car_number_left.setText("");
-//            start_time_left.setText("");
-//            earnest_money_left.setText("");
-//            arrears_money_left.setText("");
-//            relativeLayout.setBackgroundResource(R.drawable.listview_index_yes);
-//            relativeLayout.setPadding(relativeLayout.getPaddingLeft(),
-//                    relativeLayout.getPaddingTop(),
-//                    relativeLayout.getPaddingRight(),
-//                    relativeLayout.getPaddingBottom());
-//
-//            relativeLayout.setTag("");//设置标签
-//            relativeLayout.setOnClickListener(new android.view.View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                    Toast.makeText(context, "" + v.getTag(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }else{
-//
-//            relativeLayout.setBackgroundResource(R.drawable.listview_index_no);
-//            relativeLayout.setPadding(relativeLayout.getPaddingLeft(),
-//                    relativeLayout.getPaddingTop(),
-//                    relativeLayout.getPaddingRight(),
-//                    relativeLayout.getPaddingBottom());
-//
-//            view1.findViewById(R.id.car_fang_left).setVisibility( View.INVISIBLE );
-//            car_number_left.setVisibility( View.INVISIBLE );
-//            start_time_left.setVisibility( View.INVISIBLE );
-//            earnest_money_left.setVisibility( View.INVISIBLE );
-//            arrears_money_left.setVisibility( View.INVISIBLE );
-//        }
 
     }
 
 
-    private void setright( View view1 ){
+    private void setright( View view1, int i ){
 
+
+        if ( i*2+1>= list.size() ){ return; }
 
         RelativeLayout relativeLayout = view1.findViewById(R.id.listview_prrkingindex_item_RelativeLayout_Right);
+        relativeLayout.setVisibility( View.VISIBLE );
 
-        if (1==0){ relativeLayout.setVisibility( View.INVISIBLE );return; }
 
-        final TextView id_number_right = view1.findViewById(R.id.id_number_right);
+        TextView id_number_right = view1.findViewById(R.id.id_number_right);
         TextView car_number_right = view1.findViewById(R.id.car_number_right);
         TextView start_time_right = view1.findViewById(R.id.start_time_right);
         TextView earnest_money_right = view1.findViewById(R.id.earnest_money_right);
-        TextView arrears_money_right = view1.findViewById(R.id.arrears_money_right);
 
 
+        final SelectSubPlaceBean.SelectSubPlaceData selectSubPlaceDate = list.get(i*2+1);
 
-        if (1==0){
+        if ( selectSubPlaceDate.getHavecar() == 2 ){
 
-            id_number_right.setText(String.valueOf(s++));
-            start_time_right.setText("");
-            earnest_money_right.setText("");
-            arrears_money_right.setText("");
             relativeLayout.setBackgroundResource(R.drawable.listview_index_yes);
-            relativeLayout.setPadding(relativeLayout.getPaddingLeft(),
-                    relativeLayout.getPaddingTop(),
-                    relativeLayout.getPaddingRight(),
-                    relativeLayout.getPaddingBottom());
 
-            relativeLayout.setTag("");//设置标签
-            relativeLayout.setOnClickListener(new android.view.View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            id_number_right.setText(selectSubPlaceDate.getCode());
+            car_number_right.setText(selectSubPlaceDate.getCarnum());
+            start_time_right.setText("开始时间:"+TimeUtil.stampToDate(selectSubPlaceDate.getParktime()).substring(5,16));
+            earnest_money_right.setText("预付金额:"+selectSubPlaceDate.getPreprice()+"元");
+            car_number_right.setText(selectSubPlaceDate.getCarnum());
 
-                    Toast.makeText(context, "" + v.getTag(), Toast.LENGTH_SHORT).show();
-                }
-            });
+
         }else{
 
             relativeLayout.setBackgroundResource(R.drawable.listview_index_no);
-            relativeLayout.setPadding(relativeLayout.getPaddingLeft(),
-                    relativeLayout.getPaddingTop(),
-                    relativeLayout.getPaddingRight(),
-                    relativeLayout.getPaddingBottom());
+            id_number_right.setText(selectSubPlaceDate.getCode());
 
             view1.findViewById(R.id.car_fang_right).setVisibility( View.INVISIBLE );
             car_number_right.setVisibility( View.INVISIBLE );
             start_time_right.setVisibility( View.INVISIBLE );
             earnest_money_right.setVisibility( View.INVISIBLE );
-            arrears_money_right.setVisibility( View.INVISIBLE );
+
         }
 
+        relativeLayout.setPadding(relativeLayout.getPaddingLeft(),
+                relativeLayout.getPaddingTop(),
+                relativeLayout.getPaddingRight(),
+                relativeLayout.getPaddingBottom());
+
+        relativeLayout.setTag(selectSubPlaceDate.getId());//设置标签
+        relativeLayout.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                id = v.getTag().toString();
+                fragment.openParking( selectSubPlaceDate);
+            }
+        });
     }
-
-
-
-
 }

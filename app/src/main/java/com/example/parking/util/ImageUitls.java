@@ -3,12 +3,19 @@ package com.example.parking.util;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.util.Log;
+import android.widget.ImageView;
+
+import com.example.parking.activety.LoginActivity;
+import com.example.parking.activety.MainBaseActivity;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,10 +24,60 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class ImageUitls {
+
+
+
+	private static final String TAG = "ImageUtil<图片工具类>";
+
+	//设置网络图片
+	public static void setImageHttpURL(final Activity activity, final ImageView user_photo, final String path) {
+
+
+	    Log.i(TAG,"加载图片:"+path);
+		new Thread() {
+			public void run() {
+
+
+		InputStream inputStream = null;
+		try {
+			//把传过来的路径转成URL
+			URL url = new URL(path);
+			//获取连接
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			//使用GET方法访问网络
+			connection.setRequestMethod("GET");
+			//超时时间为10秒
+			connection.setConnectTimeout(10000);
+			//获取返回码
+			int code = connection.getResponseCode();
+
+			inputStream = connection.getInputStream();
+			//使用工厂把网络的输入流生产Bitmap
+			final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+
+					user_photo.setImageBitmap(bitmap);
+				}
+			});
+		} catch (Exception e) {
+
+			Log.w(TAG, e);
+		} finally {
+
+			if (inputStream != null)try{ inputStream.close(); } catch (IOException e) { Log.w(TAG, e); }
+		}
+
+			}
+		}.start();
+	}
 
 	public static int getSampleSize(BitmapFactory.Options options){
 		return computeSampleSize(options, 1000, 1000 * 1000);

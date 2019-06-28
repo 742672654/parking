@@ -69,6 +69,14 @@ public class TimeUtil {
 	 
 		return DATE_TIME.format(new Date());
 	}
+	/**
+	 * 获取当前日期时间Short
+	 * 格式：yyyy-MM-dd HH:mm:ss
+	 */
+	public static String getDateTime(long time) {
+
+		return DATE_TIME.format(new Date(time));
+	}
 
     /**
      * 获取当前日期时间Short
@@ -164,9 +172,6 @@ public class TimeUtil {
 		return latwek;
 	}
 
-	
-
-
 	/**
 	 *返回指定日期是星期几
 	 */
@@ -182,6 +187,7 @@ public class TimeUtil {
 
 		return map.get(dayForWeek(time));
 	}
+
 	/**
 	 *返回指定日期是星期几
 	 */
@@ -202,6 +208,7 @@ public class TimeUtil {
 		}
 		return dayForWeek;
 	}
+
 	public static String dayforweek(Date time) {
 		Map<Integer, String> map = new HashMap<Integer, String>();
 		map.put(1, "星期一");
@@ -214,6 +221,7 @@ public class TimeUtil {
 
 		return map.get(dayForWeek(time));
 	}
+
 	/**
 	 *返回指定日期是星期几
 	 */
@@ -289,5 +297,16 @@ public class TimeUtil {
 	    // 计算差多少分钟
 	    long min = diff % nd % nh / nm;
 	    return  min;
+	}
+
+
+
+	/*
+	 * 将时间戳转换为时间
+	 */
+	public static String stampToDate(long s){
+
+
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(s));
 	}
 }

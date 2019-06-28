@@ -14,11 +14,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import com.example.parking.R;
-import com.example.parking.activety.MainActivity;
-import com.example.parking.adapter.AccountDropListAdapter;
-import com.example.parking.bean.ParkingSpaceBean;
+import com.example.parking.bean.http.ParkingSpaceData;
 import com.example.parking.fragment.ParkingFragment;
-import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -49,7 +47,7 @@ public class ParkingSpaceView extends Fragment {
      * 车位选择
      */
     @SuppressWarnings({ "deprecation", "unused" })
-    public void showPopupWindow(final List<ParkingSpaceBean> list ) {
+    public void showPopupWindow(final List<ParkingSpaceData> list ) {
 
 
         if(listview == null){

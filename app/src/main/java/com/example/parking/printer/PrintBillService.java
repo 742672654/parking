@@ -40,26 +40,25 @@ public class PrintBillService extends IntentService {
         try {
 
             String SPRT; //需要打印的内容
-            String type; //1是文字，2是二维码，
+            int type; //1是"告知",2是"收费"
 
             if ( !StringUtil.is_valid(SPRT=intent.getStringExtra("SPRT")) ) return;
 
-            if ( !StringUtil.is_valid(type=intent.getStringExtra("type")) ) return;
+            if ( (type=intent.getIntExtra("type",0)) == 0 ) return;
 
-            switch (type){
+
 
                 //打印文字
-                case "1":
-                    printer.drawTextEx(SPRT, 5, 0, 384, -1, "simsun", 24, 0, 0, 0);
-                    break;
+                printer.drawTextEx("\r\n     "+(type==1?"告知":"收费"), 20, 0, 380, -1, "simsun", 50, 0, 0, 0);
+
+                printer.drawTextEx(SPRT, 0, 0, 385, -1, "simsun", intent.getIntExtra("fontsize",28), 0, 0, 0);
+
 
                 //打印二维码
-                case "2":
-                    printer.prn_drawBarcode(SPRT, 10, 10, 58, 10, 10, 0);
-                    break;
+//                case 2:
+//                    printer.prn_drawBarcode(SPRT, 10, 10, 58, 10, 10, 0);
+//                    break;
 
-                default:return;
-            }
 
             sendBroadcast( new Intent("android.prnt.message").putExtra("ret", printer.printPage(0)));
         } catch (Exception e) {

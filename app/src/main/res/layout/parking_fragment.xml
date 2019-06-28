@@ -21,6 +21,7 @@
             android:background="@drawable/photo" />
     </RelativeLayout>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -61,14 +62,14 @@
                 android:id="@+id/parking_carmun"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="8"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_marginLeft="5dip"
-                android:maxLength="20"
-                android:singleLine="true"
-                android:gravity="center|left"
+                android:layout_weight="8"
                 android:autoSizeTextType="uniform"
                 android:background="@null"
+                android:gravity="center|left"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textCursorDrawable="@null" />
 
         </LinearLayout>
@@ -165,6 +166,7 @@
             android:layout_height="0dp"
             android:layout_weight="0.4"
             android:background="@drawable/login_button_shape">
+
             <TextView
                 android:id="@+id/aa1"
                 android:layout_width="wrap_content"
@@ -177,7 +179,7 @@
                 android:text="剩余车位:"/>
 
             <EditText
-                android:id="@+id/a1"
+                android:id="@+id/nouse"
                 android:layout_toRightOf="@id/aa1"
                 android:text="150"
                 android:enabled="false"
@@ -191,13 +193,13 @@
                 android:singleLine="true"
                 android:autoSizeTextType="uniform"
                 android:background="@null"
-                android:textColor="@color/black"
+                android:textColor="@color/occupy_red"
                 android:textCursorDrawable="@null" />
 
 
             <TextView
                 android:id="@+id/aa2"
-                android:layout_toRightOf="@id/a1"
+                android:layout_toLeftOf="@id/wxnum"
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -208,45 +210,48 @@
                 android:text="预约车位:"/>
 
             <EditText
-                android:id="@+id/a2"
-                android:layout_toRightOf="@id/aa2"
+                android:id="@+id/wxnum"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:enabled="false"
                 android:text="20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:gravity="center"
+                android:gravity="right"
                 android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_marginRight="30dip"
                 android:layout_marginLeft="5dip"
                 android:maxLength="20"
                 android:singleLine="true"
                 android:autoSizeTextType="uniform"
-                android:textColor="@color/black"
+                android:textColor="@color/main_green"
                 android:background="@null"
                 android:textCursorDrawable="@null" />
-            <ImageView
+
+      <!--      <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginRight="5dp"
                 android:layout_centerVertical="true"
                 android:scaleType="fitCenter"
                 android:src="@mipmap/suaxin"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"/> -->
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_weight="0.5"
             android:layout_marginTop="15dip"
             android:layout_marginBottom="15dip"
             android:gravity="center"
             android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
 
             <Button
                 android:id="@+id/button_order_add"
@@ -265,11 +270,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:background="@drawable/login_button_shape"
             android:layout_height="0dp"
             android:layout_weight="1.5">
         </LinearLayout>

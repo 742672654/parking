@@ -98,7 +98,7 @@ public class FileUtil {
 
 		File f = null;
 		try {
-			File file = new File(getSDCardPath() + "/parking");
+			File file = new File(getSDCardPath() + "/parkings");
 			if (!file.exists()) { file.mkdirs(); }
 
 			f = new File(file.getAbsoluteFile() + "/data.txt");

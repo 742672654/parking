@@ -5,7 +5,10 @@ public class ResponseBean {
     private Integer code;
     private String data;
     private String message;
+    private String mobile;
 
+    public String getMobile() { return mobile; }
+    public void setMobile(String mobile) { this.mobile = mobile; }
     public Integer getCode() {
         return code;
     }
@@ -31,6 +34,7 @@ public class ResponseBean {
                 "code=" + code +
                 ", data='" + data + '\'' +
                 ", message='" + message + '\'' +
+                ", mobile='" + mobile + '\'' +
                 '}';
     }
 }

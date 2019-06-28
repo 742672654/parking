@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parking.R;
+import com.example.parking.activety.MainActivity;
+import com.example.parking.bean.http.OrderlistBean;
 import com.example.parking.fragment.OrderBase;
 
 import java.util.List;
@@ -19,17 +21,15 @@ import java.util.Map;
 
 public class OrderView extends BaseAdapter {
 
-
-
-    List<Map<String,Object>> list;  //数据源与配置器建立连接
+    List<OrderlistBean.OrderlistData> list;  //数据源与配置器建立连接
     LayoutInflater layoutInflater;//初始化布局填充器
-    Context context;
+    MainActivity activity;
     OrderBase orderBase;
 
 
-    public OrderView(Context context, OrderBase orderBase, List<Map<String, Object>> list) {
-        this.layoutInflater = layoutInflater.from(context);
-        this.context=context;
+    public OrderView(MainActivity activity, OrderBase orderBase, List<OrderlistBean.OrderlistData> list) {
+        this.layoutInflater = layoutInflater.from(activity);
+        this.activity=activity;
         this.list = list;
         this.orderBase=orderBase;
     }
@@ -61,25 +61,33 @@ public class OrderView extends BaseAdapter {
         TextView item_title1 = view1.findViewById(R.id.item_title1);
         TextView item_title2 = view1.findViewById(R.id.item_title2);
         TextView item_title3 = view1.findViewById(R.id.item_title3);
+        TextView item_title4 = view1.findViewById(R.id.item_title4);
 
-        Map<String,Object> map = list.get(i);
+        OrderlistBean.OrderlistData map = list.get(i);
 
-        item_title1.setText((String)map.get("item_title1"));
-        item_title2.setText((String)map.get("item_title2"));
-        item_title3.setText((String)map.get("item_title3"));
+        item_title1.setText("车牌号码:"+map.getCarNo());
+        item_title2.setText("所属车位:"+map.getSubname());
+        item_title3.setText("订单编号:"+map.getOrderNo());
+        item_title4.setText("入场时间:"+map.getTime().substring(5,map.getTime().length()-3));
+
+         Button btn = view1.findViewById(R.id.item_but1);
 
 
-         Button btn = (Button) view1.findViewById(R.id.item_but1);
-
-
-        btn.setTag(map.get("item_title1"));//设置标签
-
+        btn.setTag(map.getId());//设置标签
         btn.setOnClickListener(new android.view.View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                        Toast.makeText(context, "" + v.getTag(), Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < list.size(); i++) {
+
+                if (v.getTag().equals(list.get(i).getId())) {
+
+                    activity.openOrder_details(list.get(i));
+                    break;
+                }
+            }
+
             }
         });
 

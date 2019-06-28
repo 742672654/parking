@@ -1,8 +1,9 @@
 package com.example.parking.view;
 
-import android.app.ActionBar.LayoutParams;
+
+import java.util.ArrayList;
+import java.util.List;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,20 +29,18 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import com.example.parking.R;
 import com.example.parking.adapter.MyViewPagerAdapter;
 import com.example.parking.adapter.ProvinceGridViewAdapter;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * <pre>
- * 功能说明: 
+ * 功能说明:
  * 日期:	2015年4月15日
  * 开发者:	HZC
- * 
+ *
  * 历史记录
  *    修改内容：
  *    修改人员：
@@ -52,45 +52,32 @@ public class KeyboardViewPager {
 	private Activity activity;
 	private Resources resources;
 	private ImageView imageView;
-	private View mView;
-	public PopupWindow mPopupWindow;
+	public View mView;
+
 	private ViewPager viewPager;// 页卡内容
-	private TextView textView1, textView2, textView3;
+	public TextView textView1, textView2, textView3;
 	private List<View> views;// Tab页面列表
 	private int offset = 0;// 动画图片偏移量
 	private int currIndex = 0;// 当前页卡编号
 	private int bmpW;// 动画图片宽度
 	private View view1, view2, view3;// 各个页卡
 	private EditText et_carnumber;
-	private String direction;
-	private boolean isModifyOrder;
+
+
+
 	private String TAG = "KeyboardViewPager";
 
 	public KeyboardViewPager(Activity activity, boolean isModifyOrder) {
 		super();
 		this.activity = activity;
-		this.isModifyOrder = isModifyOrder;
 		if(resources == null){
 			resources = activity.getResources();
 		}
 	}
 
-	public void setEt_carnumber(EditText et_carnumber) {
-		this.et_carnumber = et_carnumber;
-	}
+	public void setEt_carnumber(EditText et_carnumber) { this.et_carnumber = et_carnumber; }
 
-	public void setDirection(String direction) {
-		this.direction = direction;
-	}
 
-	/**
-	 * 隐藏PopupWindow
-	 */
-	public void hidePopupWindow() {
-		if(mPopupWindow != null){
-			mPopupWindow.dismiss();
-		}
-	}
 
 	/**
 	 * 2 * 初始化动画，这个就是页卡滑动时，下面的横线也滑动的效果，在这里需要计算一些数据
@@ -153,40 +140,40 @@ public class KeyboardViewPager {
 				imageView.startAnimation(animation);
 			}
 			switch (viewPager.getCurrentItem()) {
-			case 0:
-				textView1.setTextColor(resources.getColor(
-						R.color.plate_text));
-				textView2.setTextColor(resources.getColor(R.color.blue_239DFD));
-				textView3.setTextColor(resources.getColor(R.color.blue_239DFD));
-				textView1.setBackgroundColor(
-						activity.getResources().getColor(R.color.blue_239DFD));
-				textView2.setBackgroundColor(
-						activity.getResources().getColor(R.color.plate_text));
-				textView3.setBackgroundColor(
-						activity.getResources().getColor(R.color.plate_text));
-				break;
-			case 1:
-				textView2.setTextColor(resources.getColor(R.color.plate_text));
-				textView1.setTextColor(resources.getColor(R.color.blue_239DFD));
-				textView3.setTextColor(resources.getColor(R.color.blue_239DFD));
-				textView2.setBackgroundColor(
-						activity.getResources().getColor(R.color.blue_239DFD));
-				textView1.setBackgroundColor(
-						activity.getResources().getColor(R.color.plate_text));
-				textView3.setBackgroundColor(
-						activity.getResources().getColor(R.color.plate_text));
-				break;
-			case 2:
-				textView3.setTextColor(resources.getColor(R.color.plate_text));
-				textView1.setTextColor(resources.getColor(R.color.blue_239DFD));
-				textView2.setTextColor(resources.getColor(R.color.blue_239DFD));
-				textView3.setBackgroundColor(
-						activity.getResources().getColor(R.color.blue_239DFD));
-				textView2.setBackgroundColor(
-						activity.getResources().getColor(R.color.plate_text));
-				textView1.setBackgroundColor(
-						activity.getResources().getColor(R.color.plate_text));
-				break;
+				case 0:
+					textView1.setTextColor(resources.getColor(
+							R.color.plate_text));
+					textView2.setTextColor(resources.getColor(R.color.blue_239DFD));
+					textView3.setTextColor(resources.getColor(R.color.blue_239DFD));
+					textView1.setBackgroundColor(
+							activity.getResources().getColor(R.color.blue_239DFD));
+					textView2.setBackgroundColor(
+							activity.getResources().getColor(R.color.plate_text));
+					textView3.setBackgroundColor(
+							activity.getResources().getColor(R.color.plate_text));
+					break;
+				case 1:
+					textView2.setTextColor(resources.getColor(R.color.plate_text));
+					textView1.setTextColor(resources.getColor(R.color.blue_239DFD));
+					textView3.setTextColor(resources.getColor(R.color.blue_239DFD));
+					textView2.setBackgroundColor(
+							activity.getResources().getColor(R.color.blue_239DFD));
+					textView1.setBackgroundColor(
+							activity.getResources().getColor(R.color.plate_text));
+					textView3.setBackgroundColor(
+							activity.getResources().getColor(R.color.plate_text));
+					break;
+				case 2:
+					textView3.setTextColor(resources.getColor(R.color.plate_text));
+					textView1.setTextColor(resources.getColor(R.color.blue_239DFD));
+					textView2.setTextColor(resources.getColor(R.color.blue_239DFD));
+					textView3.setBackgroundColor(
+							activity.getResources().getColor(R.color.blue_239DFD));
+					textView2.setBackgroundColor(
+							activity.getResources().getColor(R.color.plate_text));
+					textView1.setBackgroundColor(
+							activity.getResources().getColor(R.color.plate_text));
+					break;
 			}
 		}
 	}
@@ -195,14 +182,12 @@ public class KeyboardViewPager {
 		GridView gv_province = (GridView) view1
 				.findViewById(R.id.gridview_province);
 		gv_province.setSelector(new ColorDrawable(Color.TRANSPARENT));
-		final String[] province = new String[] { "京", "沪", "浙", "苏", "粤", "鲁",
+		final String[] province = new String[] { "闽", "沪", "浙", "苏", "粤", "鲁",
 				"晋", "冀", "豫", "川", "渝", "辽", "吉", "黑", "皖", "鄂", "湘", "赣",
-				"闽", "陕", "甘", "宁", "蒙", "津", "贵", "云", "桂", "琼", "青", "新",
+				"京", "陕", "甘", "宁", "蒙", "津", "贵", "云", "桂", "琼", "青", "新",
 				"藏", "港", "澳", "使" ,""};
 		final ArrayList<String> provinces = new ArrayList<String>();
-		for (int i = 0; i < province.length; i++) {
-			provinces.add(province[i]);
-		}
+		for (int i = 0; i < province.length; i++) { provinces.add(province[i]); }
 		ProvinceGridViewAdapter adapter = new ProvinceGridViewAdapter(activity,
 				provinces, false);
 		gv_province.setAdapter(adapter);
@@ -210,12 +195,12 @@ public class KeyboardViewPager {
 		gv_province.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+									int position, long id) {
 				if (position == provinces.size() - 1){
 					gridBtnDeleteOnItemClick();
 					return;
 				}
-				//gridOnItemClick(province, position);
+				gridOnItemClick(province, position);
 				viewPager.setCurrentItem(1);
 			}
 		});
@@ -240,12 +225,12 @@ public class KeyboardViewPager {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+									int position, long id) {
 				if (position == numbers.size() - 1){
 					gridBtnDeleteOnItemClick();
 					return;
 				}
-				//gridOnItemClick(number, position);
+				gridOnItemClick(number, position);
 			}
 		});
 	}
@@ -268,27 +253,27 @@ public class KeyboardViewPager {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+									int position, long id) {
 				if (position == polices.size() - 1){
 					gridBtnDeleteOnItemClick();
 					return;
 				}
-				//gridOnItemClick(police, position);
+				gridOnItemClick(police, position);
 			}
 		});
 	}
 
-//	private void gridOnItemClick(final String[] number, int position) {
-//		final int index = et_carnumber.getSelectionStart();
-//		final Editable editable = et_carnumber.getText();
-//		editable.insert(index, number[position]);
+	private void gridOnItemClick(final String[] number, int position) {
+		final int index = et_carnumber.getSelectionStart();
+		final Editable editable = et_carnumber.getText();
+		editable.insert(index, number[position]);
 //		if (isModifyOrder){
 //			Intent intent = new Intent();
 //			intent.setAction(OrderDetailsFragment.action);
 //			intent.putExtra("state", OrderDetailsFragment.modifyorder_action);
 //			activity.sendBroadcast(intent);
 //		}
-//	}
+	}
 
 	private void gridBtnDeleteOnItemClick() {
 		final int index = et_carnumber.getSelectionStart();
@@ -311,44 +296,40 @@ public class KeyboardViewPager {
 		textView3.setOnClickListener(new MyOnClickListener(2));
 	}
 
+	public PopupWindow mPopupWindow;
+
 	/**
 	 * 数字键盘
 	 * @param parent
 	 */
 	@SuppressWarnings("deprecation")
 	public void showPopupWindow(View parent) {
-		int screenHeight = 0; 
+		int screenHeight = 0;
 		// TODO Auto-generated method stub
-			mView = (View) LayoutInflater.from(activity).inflate(R.layout.keyboard_page_gridview_zone, null);
-			initView();
-			InitImageView(activity);
-			InitTextView(activity);
-			PopupWindow mPopupWindow = new PopupWindow(mView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			DisplayMetrics dm = new DisplayMetrics();
-			//获取屏幕信息
-			activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-			int screenWidth = dm.widthPixels;
-			screenHeight = dm.heightPixels;
-			mPopupWindow.setWidth((int)(screenWidth*0.5));
-			mPopupWindow.setHeight((int)(screenHeight*0.55));
-		
+		mView = (View) LayoutInflater.from(activity).inflate(R.layout.keyboard_page_gridview_zone, null);
+		initView();
+		InitImageView(activity);
+		InitTextView(activity);
+		 mPopupWindow = new PopupWindow(mView, ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT, true);
+		DisplayMetrics dm = new DisplayMetrics();
+		//获取屏幕信息
+		activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+		int screenWidth = dm.widthPixels;
+		screenHeight = dm.heightPixels;
+		mPopupWindow.setWidth((int)(screenWidth*1));
+		mPopupWindow.setHeight((int)(screenHeight*0.45));
+
 		mPopupWindow.setOutsideTouchable(true);
-		// 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景  
+
+		// 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景
 		mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-		final int[] location = new int[2];  
-		parent.getLocationOnScreen(location);
 
-		if(direction.equals("left")){
-			//显示在父控件左边
-			mPopupWindow.showAtLocation(parent, Gravity.NO_GRAVITY,
-					0, location[1]);  
-		}else if(direction.equals("right")){
-			//显示在父控件右边 加上一个大数100的目的是保证此视图在屏幕最右边
-			mPopupWindow.showAtLocation(parent, Gravity.NO_GRAVITY,
-					location[0]+parent.getWidth() + 100, location[1]); 
-		}
+//		final int[] location = new int[2];
+//		parent.getLocationOnScreen(location);
 
-		mPopupWindow.setOnDismissListener(new OnDismissListener() {
+		mPopupWindow.showAtLocation(parent, Gravity.NO_GRAVITY, 0, screenHeight);
+
+		mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
 			@Override
 			public void onDismiss() {
@@ -360,7 +341,7 @@ public class KeyboardViewPager {
 		setView2();
 		sheView3();
 		//直接调用setCurrentItem(0)，pager不会变化，因为默认pager在第一页，当系统发现程序猿调用此方法，就不去理会，所以才这样写，看着别扭实现了就ok了
-		viewPager.setCurrentItem(1);
+		//viewPager.setCurrentItem(1);
 		viewPager.setCurrentItem(0);
 	}
 
@@ -377,4 +358,5 @@ public class KeyboardViewPager {
 		viewPager.setAdapter(new MyViewPagerAdapter(views));
 		viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
 	}
+
 }

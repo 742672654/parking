@@ -16,7 +16,7 @@ public class MyFragment extends MyBase {
 
 
 
-    public static final String TAG = "MyFragment";
+    public static final String TAG = "MyFragment我的";
 
 
     public void onStart() {
@@ -33,21 +33,12 @@ public class MyFragment extends MyBase {
         }
     }
 
-    @Override
-    public void onResponseGET(String url, Map<String, String> param, String sign, String object) {
 
-        Log.i(TAG, url + "----" + object+"'****"+param);
-
-        switch (sign) {
-            default:
-                break;
-        }
-    }
 
     @Override
     public void onResponsePOST(String url, Map<String, String> param, String sign, String object) {
-
-        Log.i(TAG, url + "----" + object+"'****"+param);
+        super.onResponsePOST(url, param, sign, object);
+        Log.i(TAG, "url="+url + "----param="+param +";sign="+sign + ";object="+object+"'****"+param);
 
         switch (sign) {
             default:

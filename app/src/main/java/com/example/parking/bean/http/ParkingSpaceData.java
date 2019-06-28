@@ -1,6 +1,6 @@
-package com.example.parking.bean;
+package com.example.parking.bean.http;
 
-public class ParkingSpaceBean {
+public class ParkingSpaceData {
 
     private String createdate;// 1557371719000,
     private String havecar;// 1,
